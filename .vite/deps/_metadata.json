@@ -1,0 +1,55 @@
+{
+  "hash": "f1561eb0",
+  "configHash": "6aa6f5df",
+  "lockfileHash": "baccd10f",
+  "browserHash": "2fe7c27d",
+  "optimized": {
+    "react/jsx-dev-runtime": {
+      "src": "../../node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "40434b91",
+      "needsInterop": true
+    },
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "e2bb6cee",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "d937aa71",
+      "needsInterop": true
+    },
+    "react-router-dom": {
+      "src": "../../node_modules/react-router-dom/dist/index.js",
+      "file": "react-router-dom.js",
+      "fileHash": "520a2904",
+      "needsInterop": false
+    },
+    "moment": {
+      "src": "../../node_modules/moment/dist/moment.js",
+      "file": "moment.js",
+      "fileHash": "290b3f6f",
+      "needsInterop": false
+    },
+    "flowbite-react": {
+      "src": "../../node_modules/flowbite-react/dist/esm/index.mjs",
+      "file": "flowbite-react.js",
+      "fileHash": "2369fb59",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-KTSCGB3P": {
+      "file": "chunk-KTSCGB3P.js"
+    },
+    "chunk-MOERMBVA": {
+      "file": "chunk-MOERMBVA.js"
+    },
+    "chunk-BQWMX7FD": {
+      "file": "chunk-BQWMX7FD.js"
+    }
+  }
+}
