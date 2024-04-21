@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ArticleCard from "../../components/Article/ArticleCard";
 import { ArticleInterface } from "../../services/interfaces/Article";
 import { MessageInterface } from "../../services/interfaces/Message";
@@ -6,12 +6,10 @@ import MessageCard from "../../components/Message/MessageCard";
 import moment from "moment";
 
 interface HomePageProps {
-  messages: MessageInterface[];
   articles: ArticleInterface[];
-  handleSubmitMessage: (message: MessageInterface) => void;
 }
 export default function HomePage(props: HomePageProps) {
-  const { messages, articles, handleSubmitMessage } = props;
+  const { articles } = props;
 
   const [form, setForm] = useState<MessageInterface>({
     name: "",
@@ -19,6 +17,19 @@ export default function HomePage(props: HomePageProps) {
     message: "",
     created_ad: moment().format("LLL"),
   });
+
+  useEffect(() => {
+    localStorage.setItem("form", JSON.stringify(form));
+  });
+
+  const [storedMessages, setStoredMessages] = useState<MessageInterface[]>([]);
+
+  useEffect(() => {
+    const storedMessages = localStorage.getItem("messages");
+    if (storedMessages) {
+      setStoredMessages(JSON.parse(storedMessages));
+    }
+  }, []);
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -31,6 +42,12 @@ export default function HomePage(props: HomePageProps) {
     handleSubmitMessage(form);
   }
 
+  function handleSubmitMessage(message: MessageInterface) {
+    const updateMessages = [...storedMessages, message];
+    setStoredMessages(updateMessages);
+    localStorage.setItem("messages", JSON.stringify(updateMessages));
+  }
+
   return (
     <>
       <div className="flex flex-col items-center mt-10">
@@ -38,7 +55,7 @@ export default function HomePage(props: HomePageProps) {
           <div className="w-8/12">
             <h2 className="text-xl mb-4">Boîte de réception des messages</h2>
             <div className="w-11/12 bg-slate-200 p-4 mr-5 flex flex-col gap-2">
-              {[...messages]
+              {[...storedMessages]
                 .reverse()
                 .map((message: MessageInterface, index: number) => (
                   <MessageCard message={message} key={index} index={index} />

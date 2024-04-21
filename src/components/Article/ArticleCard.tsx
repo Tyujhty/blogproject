@@ -5,6 +5,7 @@ export default function ArticleCard(props: {
   index: number;
 }) {
   const { article, index } = props;
+
   return (
     <>
       <Card

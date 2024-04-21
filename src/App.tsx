@@ -6,7 +6,6 @@ import BlogPage from "./pages/Blog/BlogPage";
 import AddArticlePage from "./pages/Articles/AddArticlePage";
 import { useState } from "react";
 import { ArticleInterface } from "./services/interfaces/Article";
-import { MessageInterface } from "./services/interfaces/Message.ts";
 
 function App() {
   const [articles, setArticles] = useState<ArticleInterface[]>([]);
@@ -15,26 +14,11 @@ function App() {
     setArticles([...articles, article]);
   }
 
-  const [messages, setMessages] = useState<MessageInterface[]>([]);
-
-  function handleSubmitMessage(message: MessageInterface): void {
-    setMessages([...messages, message]);
-  }
-
   return (
     <>
       <Navbar />
       <Routes>
-        <Route
-          path="/"
-          element={
-            <HomePage
-              articles={articles}
-              messages={messages}
-              handleSubmitMessage={handleSubmitMessage}
-            />
-          }
-        />
+        <Route path="/" element={<HomePage articles={articles} />} />
         <Route path="/blog" element={<BlogPage articles={articles} />} />
         <Route
           path="/article/add"
