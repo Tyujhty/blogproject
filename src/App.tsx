@@ -4,15 +4,26 @@ import Navbar from "./components/Navbar/Navbar";
 import HomePage from "./pages/Home/HomePage.tsx";
 import BlogPage from "./pages/Blog/BlogPage";
 import AddArticlePage from "./pages/Articles/AddArticlePage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArticleInterface } from "./services/interfaces/Article";
 
 function App() {
   const [articles, setArticles] = useState<ArticleInterface[]>([]);
 
   function handleSubmitArticle(article: ArticleInterface): void {
-    setArticles([...articles, article]);
+    const updateArticles = [...articles, article];
+    setArticles(updateArticles);
+    localStorage.setItem("articles", JSON.stringify([...articles, article]));
   }
+
+  useEffect(() => {
+    const storedArticles = localStorage.getItem("articles");
+    if (storedArticles) {
+      setArticles(JSON.parse(storedArticles));
+    }
+  }, []);
+
+  // localStorage.clear();
 
   return (
     <>

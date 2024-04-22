@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ArticleCard from "../../components/Article/ArticleCard";
 import { ArticleInterface } from "../../services/interfaces/Article";
 import { MessageInterface } from "../../services/interfaces/Message";
 import MessageCard from "../../components/Message/MessageCard";
 import moment from "moment";
+import * as yup from "yup";
+import { useFormik } from "formik";
 
 interface HomePageProps {
   articles: ArticleInterface[];
@@ -11,12 +13,12 @@ interface HomePageProps {
 export default function HomePage(props: HomePageProps) {
   const { articles } = props;
 
-  const [form, setForm] = useState<MessageInterface>({
+  const form = {
     name: "",
     subject: "",
     message: "",
     created_ad: moment().format("LLL"),
-  });
+  };
 
   useEffect(() => {
     localStorage.setItem("form", JSON.stringify(form));
@@ -31,22 +33,37 @@ export default function HomePage(props: HomePageProps) {
     }
   }, []);
 
-  function handleChange(
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) {
-    const { name, value } = e.currentTarget;
-    setForm({ ...form, [name]: value });
-  }
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    handleSubmitMessage(form);
-  }
-
   function handleSubmitMessage(message: MessageInterface) {
     const updateMessages = [...storedMessages, message];
     setStoredMessages(updateMessages);
     localStorage.setItem("messages", JSON.stringify(updateMessages));
   }
+
+  const validationSchema = yup.object({
+    name: yup
+      .string()
+      .min(2, "Le nom doit contenir 2 caractères minimum")
+      .max(100, "Le nom ne doit pas dépasser 100 caractères")
+      .required("Nom obligatoire"),
+    subject: yup
+      .string()
+      .min(2, "Le sujet doit contenir 2 caractères minimum")
+      .max(100, "Le sujet ne doit pas dépasser 100 caractères")
+      .required("Sujet obligatoire"),
+    message: yup.string().required("Message obligatoire"),
+  });
+
+  const formik = useFormik({
+    initialValues: form,
+    validationSchema: validationSchema,
+
+    onSubmit: (values) => {
+      localStorage.setItem("form", JSON.stringify(values));
+      handleSubmitMessage(values);
+      formik.resetForm();
+      alert("Message envoyé");
+    },
+  });
 
   return (
     <>
@@ -67,7 +84,7 @@ export default function HomePage(props: HomePageProps) {
             <div className="bg-slate-200 w-full p-4">
               <form
                 className="flex flex-col gap-2 w-full"
-                onSubmit={handleSubmit}
+                onSubmit={formik.handleSubmit}
               >
                 <label htmlFor="name" className="font-bold">
                   Nom
@@ -76,7 +93,8 @@ export default function HomePage(props: HomePageProps) {
                   type="text"
                   name="name"
                   id="name"
-                  onChange={handleChange}
+                  onChange={formik.handleChange}
+                  value={formik.values.name}
                 />
                 <br />
                 <br />
@@ -88,7 +106,8 @@ export default function HomePage(props: HomePageProps) {
                   type="text"
                   name="subject"
                   id="subject"
-                  onChange={handleChange}
+                  onChange={formik.handleChange}
+                  value={formik.values.subject}
                 />
                 <br />
                 <br />
@@ -96,7 +115,12 @@ export default function HomePage(props: HomePageProps) {
                 <label htmlFor="message" className="font-bold">
                   Message
                 </label>
-                <textarea name="message" id="message" onChange={handleChange} />
+                <textarea
+                  name="message"
+                  id="message"
+                  onChange={formik.handleChange}
+                  value={formik.values.message}
+                />
                 <br />
 
                 <button

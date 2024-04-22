@@ -2,6 +2,7 @@ import { useFormik } from "formik";
 import { ArticleInterface } from "../../services/interfaces/Article";
 import moment from "moment";
 import * as yup from "yup";
+import { useId } from "react";
 
 interface AddArticlePageProps {
   handleSubmitArticle: (article: ArticleInterface) => void;
@@ -10,7 +11,10 @@ interface AddArticlePageProps {
 export default function AddArticlePage(props: AddArticlePageProps) {
   const { handleSubmitArticle } = props;
 
+  const id = useId();
+
   const formContact = {
+    id: id,
     author: "",
     title: "",
     description: "",
@@ -36,6 +40,7 @@ export default function AddArticlePage(props: AddArticlePageProps) {
     validationSchema: validationSchema,
 
     onSubmit: (values) => {
+      localStorage.setItem("form", JSON.stringify(values));
       handleSubmitArticle(values);
       formik.resetForm();
       alert("Article ajouté au blog");
