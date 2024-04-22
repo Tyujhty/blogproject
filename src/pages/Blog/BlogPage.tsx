@@ -8,7 +8,7 @@ export default function BlogPage(props: { articles: ArticleInterface[] }) {
     <>
       <div className="h-full flex flex-col items-center mt-8">
         <h1 className=" text-3xl">Blog</h1>
-        <div className="flex flex-col gap-4 mt-10">
+        <div className="flex gap-4 mt-10 justify-center flex-wrap">
           {[...articles]
             .reverse()
             .map((article: ArticleInterface, index: number) => (

@@ -1,5 +1,6 @@
 import { Card } from "flowbite-react";
 import { ArticleInterface } from "../../services/interfaces/Article";
+import { Link } from "react-router-dom";
 export default function ArticleCard(props: {
   article: ArticleInterface;
   index: number;
@@ -24,6 +25,12 @@ export default function ArticleCard(props: {
         <p className="font-normal text-gray-700 dark:text-gray-400">
           {article.description.substring(0, 125)}...
         </p>
+        <Link
+          className="p-2 bg-lime-300 hover:bg-lime-500 rounded-md"
+          to={`/article/${article.id}`}
+        >
+          Voir l'article
+        </Link>
       </Card>
     </>
   );

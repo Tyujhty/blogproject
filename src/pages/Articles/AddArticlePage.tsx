@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import { ArticleInterface } from "../../services/interfaces/Article";
 import moment from "moment";
 import * as yup from "yup";
-import { useId } from "react";
+import { useEffect, useState } from "react";
 
 interface AddArticlePageProps {
   handleSubmitArticle: (article: ArticleInterface) => void;
@@ -11,7 +11,15 @@ interface AddArticlePageProps {
 export default function AddArticlePage(props: AddArticlePageProps) {
   const { handleSubmitArticle } = props;
 
-  const id = useId();
+  // Check if there is an Id stores in the localStorage, if not, starts at 0
+  const initialId = parseInt(localStorage.getItem("id") || "0", 10);
+
+  const [id, setId] = useState<number>(initialId);
+
+  useEffect(() => {
+    //Store the id as a string in the localStorage
+    localStorage.setItem("id", id.toString());
+  }, [id]);
 
   const formContact = {
     id: id,
@@ -40,6 +48,10 @@ export default function AddArticlePage(props: AddArticlePageProps) {
     validationSchema: validationSchema,
 
     onSubmit: (values) => {
+      const updateId = id + 1;
+      setId(updateId);
+      values.id = updateId;
+
       localStorage.setItem("form", JSON.stringify(values));
       handleSubmitArticle(values);
       formik.resetForm();
@@ -51,7 +63,6 @@ export default function AddArticlePage(props: AddArticlePageProps) {
     <>
       <div className="h-full flex flex-col items-center mt-8 gap-12">
         <h1 className=" text-3xl">Ajouter un article</h1>
-        <p>Lorem ipsum</p>
         <div className="flex justify-center w-full">
           <form
             className="flex flex-col w-1/2 p-8 gap-2 bg-slate-200 rounded"

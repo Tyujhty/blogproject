@@ -1,5 +1,5 @@
 export interface ArticleInterface {
-  id: string;
+  id: number;
   author: string;
   title: string;
   description: string;

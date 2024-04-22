@@ -6,6 +6,7 @@ import BlogPage from "./pages/Blog/BlogPage";
 import AddArticlePage from "./pages/Articles/AddArticlePage";
 import { useEffect, useState } from "react";
 import { ArticleInterface } from "./services/interfaces/Article";
+import ShowArticlePage from "./pages/Articles/ShowArticlePage.tsx";
 
 function App() {
   const [articles, setArticles] = useState<ArticleInterface[]>([]);
@@ -23,7 +24,7 @@ function App() {
     }
   }, []);
 
-  // localStorage.clear();
+  localStorage.clear();
 
   return (
     <>
@@ -34,6 +35,11 @@ function App() {
         <Route
           path="/article/add"
           element={<AddArticlePage handleSubmitArticle={handleSubmitArticle} />}
+        />
+
+        <Route
+          path="/article/:id"
+          element={<ShowArticlePage articles={articles} />}
         />
       </Routes>
     </>
