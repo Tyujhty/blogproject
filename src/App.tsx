@@ -24,7 +24,7 @@ function App() {
     }
   }, []);
 
-  localStorage.clear();
+  //localStorage.clear();
 
   return (
     <>
